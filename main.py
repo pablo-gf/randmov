@@ -1,40 +1,36 @@
 import requests
 from bs4 import BeautifulSoup
-from getpass import getpass
 
-session = requests.Session()
+LOGIN_URL = "https://letterboxd.com/sign-in/"
+DATA_URL = "https://letterboxd.com/settings/data/"
 
-# Try to access the data settings page first
-check_page = session.get('https://letterboxd.com/settings/data/')
-if 'Sign in to Letterboxd' in check_page.text or 'Sign in' in check_page.text:
-    # Not logged in, prompt for credentials
-    print('Session not authenticated. Please log in.')
-    # 1. Get the login page to fetch CSRF token
-    login_page = session.get('https://letterboxd.com/sign-in/')
-    soup = BeautifulSoup(login_page.text, 'html.parser')
-    csrf_input = soup.find('input', {'name': '__csrf'})
-    csrf_token = csrf_input['value'] if csrf_input else None
+USERNAME = "your_username"
+PASSWORD = "your_password"
 
-    username = input('Enter your Letterboxd username: ')
-    password = getpass('Enter your Letterboxd password: ')
+with requests.Session() as s:
+    # 1. Get login page for CSRF token
+    resp = s.get(LOGIN_URL)
+    soup = BeautifulSoup(resp.text, "html.parser")
+    csrf_token = soup.find("input", {"name": "csrf"})["value"]
 
-    login_data = {
-        'username': username,
-        'password': password,
-        '__csrf': csrf_token,
-        'authenticationCode': '',
+    # 2. Post login form
+    payload = {
+        "username": USERNAME,
+        "password": PASSWORD,
+        "csrf": csrf_token,
+        "remember": "on"
     }
+    s.post(LOGIN_URL, data=payload)
 
-    # 2. Send POST request to the correct endpoint
-    response = session.post('https://letterboxd.com/user/login.do', data=login_data)
+    # 3. Go to data export page
+    resp = s.get(DATA_URL)
+    soup = BeautifulSoup(resp.text, "html.parser")
+    # Find the export form/button and any required tokens
 
-    # 3. Check if login was successful (look for your username or profile link in the response)
-    if username.lower() in response.text.lower():
-        print('Login successful!')
-        data_page = session.get('https://letterboxd.com/settings/data/')
-        print(data_page.text)
-    else:
-        print('Login failed.')
-else:
-    print('Session already authenticated!')
-    print(check_page.text) 
+    # 4. Trigger export (may require another POST)
+    # Example: s.post(EXPORT_URL, data=export_payload)
+    # Download the file
+
+    # Save the file
+    with open("letterboxd_data.zip", "wb") as f:
+        f.write(resp.content)
