@@ -49,8 +49,8 @@ letterboxd_data.*
 *.csv
 *.zip
 
-# Configuration with credentials (if modified)
-config.py
+# login details file
+login_details.yml
 
 # Logs
 *.log 
