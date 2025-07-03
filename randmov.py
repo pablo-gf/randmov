@@ -10,7 +10,7 @@ conf = yaml.safe_load(open('login_details.yml'))
 username = conf['letterboxd_app']['username']
 password = conf['letterboxd_app']['password']
 
-service = Service(executable_path="./chromedriver")
+service = Service("./chromedriver")
 driver = webdriver.Chrome(service=service)
 
 def login(url, usernameId, username, passwordId, password, submit_buttonId):
