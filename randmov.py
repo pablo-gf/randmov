@@ -1,22 +1,25 @@
-from selenium import webdriver # Library which allows to automate browser through Python
-from selenium.webdriver.chrome.service import Service
+import chromedriver_autoinstaller
+chromedriver_autoinstaller.install() # Installs latest version of ChromeDriver and skips if allready installed
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 import yaml
 
-login_url = "https://letterboxd.com/sign-in/"
-data_url = "https://letterboxd.com/settings/data/"
-
+# Read credentials
 conf = yaml.safe_load(open('login_details.yml'))
-
 username = conf['letterboxd_app']['username']
 password = conf['letterboxd_app']['password']
 
-service = Service("./chromedriver")
-driver = webdriver.Chrome(service=service)
+# Set up Chrome options
+options = webdriver.ChromeOptions()
+#options.add_argument("--headless")  # optional to make it not show
+driver = webdriver.Chrome(options=options)
 
+# Login function
 def login(url, usernameId, username, passwordId, password, submit_buttonId):
     driver.get(url)
-    driver.find_element_by_id(usernameId).send_keys(username)
-    driver.find_element_by_id(passwordId).send_keys(password)
-    driver.find_element_by_css_selector(submit_buttonId).click() # Because it does not have an id set in the html file
+    driver.find_element(By.ID, usernameId).send_keys(username)
+    driver.find_element(By.ID, passwordId).send_keys(password)
+    driver.find_element(By.CSS_SELECTOR, submit_buttonId).click()
 
-login(login_url, "field-username", username, "field-password", password, "button.standalone-flow-button.-inline.-action.-activity-indicator")
+# Run it
+login("https://letterboxd.com/sign-in/", "field-username", username, "field-password", password, "button.standalone-flow-button.-inline.-action.-activity-indicator")

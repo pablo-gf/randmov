@@ -15,6 +15,11 @@ This project provides a web scraper to automatically log into Letterboxd and dow
 
 - Python 3.7 or higher
 - Letterboxd account with username and password
+- Chrome installed through: 
+    `wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -`
+    `sudo sh -c 'echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.    list.d/google-chrome.list'`
+    `sudo apt update`
+    `sudo apt install google-chrome-stable`
 
 ## Installation
 
