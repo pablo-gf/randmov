@@ -53,4 +53,7 @@ letterboxd_data.*
 login_details.yml
 
 # Logs
-*.log 
+*.log
+
+# Exclude .gitignore itself
+.gitignore
