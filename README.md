@@ -1,129 +1,73 @@
-# Letterboxd Data Export Scraper
+# RandMov
 
-This project provides a web scraper to automatically log into Letterboxd and download your personal data export (CSV file) from the settings page.
+RandMov is a Python project that automates the process of logging into Letterboxd, exporting movie data, and selecting a random movie from the watchlist.
 
 ## Features
+- Automates login to Letterboxd using Selenium.
+- Exports movie data from Letterboxd.
+- Extracts the exported ZIP file containing the watchlist.
+- Loads the watchlist CSV file and selects a random movie.
 
-- Automated login to Letterboxd using your credentials
-- Navigation to the data export page
-- Automatic triggering of data export
-- Download and save of the CSV/ZIP file
-- Error handling and user feedback
-- Secure credential management using environment variables
-
-## Prerequisites
-
-- Python 3.7 or higher
-- Letterboxd account with username and password
-- Chrome installed through: 
-    `wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -`
-    `sudo sh -c 'echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.    list.d/google-chrome.list'`
-    `sudo apt update`
-    `sudo apt install google-chrome-stable`
+## Requirements
+- Python 3.12 or higher
+- Google Chrome installed
+- ChromeDriver (automatically installed via `chromedriver-autoinstaller`)
 
 ## Installation
 
-1. Clone or download this repository
-2. Install the required dependencies:
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd randmov
+   ```
 
-```bash
-pip install -r requirements.txt
-```
+2. Create and activate a virtual environment:
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate  # For Linux/macOS
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Configuration
+
+1. Create a `login_details.yml` file in the project directory with the following structure:
+   ```yaml
+   letterboxd_app:
+     username: <your-letterboxd-username>
+     password: <your-letterboxd-password>
+   ```
+
+2. Ensure the `login_details.yml` file is correctly formatted and contains your Letterboxd credentials.
 
 ## Usage
 
-### Method 1: Using Environment Variables (Recommended)
-
-Set your Letterboxd credentials as environment variables:
-
+Run the script:
 ```bash
-export LETTERBOXD_USERNAME="your_username"
-export LETTERBOXD_PASSWORD="your_password"
+python randmov.py
 ```
 
-Then run the scraper:
-
-```bash
-python main.py
-```
-
-### Method 2: Direct Credential Input
-
-If you prefer to modify the script directly, you can edit the `main()` function in `main.py` to include your credentials:
-
-```python
-def main():
-    username = "your_username"  # Replace with your actual username
-    password = "your_password"  # Replace with your actual password
-    
-    scraper = LetterboxdScraper(username, password)
-    success = scraper.run()
-    
-    if not success:
-        print("Failed to export data. Please check your credentials and try again.")
-        sys.exit(1)
-```
-
-## How it Works
-
-1. **Login Process**: The scraper visits the Letterboxd sign-in page, extracts the CSRF token, and submits your credentials
-2. **Navigation**: After successful login, it navigates to the data export page at `/settings/data/`
-3. **Export Trigger**: It finds and submits the export form to trigger the data download
-4. **File Download**: The resulting CSV or ZIP file is saved to your local directory
-
-## Output
-
-The scraper will download your Letterboxd data as either:
-- `letterboxd_data.csv` (if the export is in CSV format)
-- `letterboxd_data.zip` (if the export is in ZIP format)
-
-## Error Handling
-
-The scraper includes comprehensive error handling for:
-- Network connection issues
-- Invalid credentials
-- Missing CSRF tokens
-- Changes in website structure
-- File download failures
-
-## Security Notes
-
-- **Never commit your credentials to version control**
-- Use environment variables for credential management
-- The scraper uses a realistic User-Agent to avoid detection
-- All requests are made through a session to maintain login state
+The script will:
+1. Log into Letterboxd.
+2. Export your watchlist data.
+3. Extract the ZIP file containing the watchlist.
+4. Load the watchlist CSV file.
+5. Select and display a random movie from the watchlist.
 
 ## Troubleshooting
 
-### Login Issues
-- Verify your username and password are correct
-- Check if Letterboxd has any CAPTCHA or additional verification
-- Ensure your account is not locked or suspended
-
-### Export Issues
-- The scraper may need updates if Letterboxd changes their website structure
-- Some accounts might have restrictions on data export
-- Check if you have sufficient permissions to export data
-
-### Network Issues
-- Ensure you have a stable internet connection
-- Check if Letterboxd is accessible from your location
-- Some networks may block automated requests
-
-## Legal and Ethical Considerations
-
-- This scraper is for personal use only
-- Respect Letterboxd's Terms of Service
-- Do not use this tool for commercial purposes
-- Be mindful of rate limiting and server load
-- Only download your own data
-
-## Dependencies
-
-- `requests`: HTTP library for making web requests
-- `beautifulsoup4`: HTML parsing library
-- `lxml`: XML/HTML parser backend for BeautifulSoup
+- Ensure Google Chrome is installed and updated.
+- If the script fails to locate elements, verify the CSS selectors in the code match the current Letterboxd website structure.
+- If the virtual environment is not working correctly, recreate it using:
+  ```bash
+  rm -rf .venv
+  python3 -m venv .venv
+  source .venv/bin/activate
+  pip install -r requirements.txt
+  ```
 
 ## License
-
-This project is for educational and personal use only. Please respect Letterboxd's terms of service when using this tool.
+This project is licensed under the MIT License.
