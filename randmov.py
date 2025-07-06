@@ -4,42 +4,48 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains  # Add this import
-import yaml
+from selenium.webdriver.common.action_chains import ActionChains
+import sys
 import os
 import time
 import zipfile
 import pandas as pd
 import random
 import shutil
+import getpass
+import threading
 
-# Set download directory:
-download_dir = os.getcwd()
+def set_chrome_config():
 
-# Configure Chrome options
-options = webdriver.ChromeOptions()
-prefs = {
-    "download.default_directory": download_dir,
-    "download.prompt_for_download": False,
-    "download.directory_upgrade": True,
-    "safebrowsing.enabled": True
-}
-options.add_experimental_option("prefs", prefs)
-options.add_argument("--headless")  # Uncomment for headless mode
+    # Set download directory:
+    download_dir = os.getcwd()
 
-# Initialize driver
-chromedriver_autoinstaller.install()
-driver = webdriver.Chrome(options=options)
+    # Configure Chrome options
+    options = webdriver.ChromeOptions()
+    prefs = {
+        "download.default_directory": download_dir,
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": True
+    }
+    options.add_experimental_option("prefs", prefs)
+    options.add_argument("--headless")  # Uncomment for headless mode
+
+    # Initialize driver
+    chromedriver_autoinstaller.install()
+    driver = webdriver.Chrome(options=options)
+
+    return driver
 
 # Login function
-def login(url, usernameId, username, passwordId, password, submit_buttonId):
+def login(driver, url, usernameId, username, passwordId, password, submit_buttonId):
     driver.get(url)
     driver.find_element(By.ID, usernameId).send_keys(username)
     driver.find_element(By.ID, passwordId).send_keys(password)
     driver.find_element(By.CSS_SELECTOR, submit_buttonId).click()
 
 # Click on function
-def click_on(parameter):
+def click_on(driver, parameter):
     return WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, parameter))).click()
 
 # Clean function
@@ -58,20 +64,31 @@ def delete_zip():
 
 def main():
 
-    # Target URLs
-    LOGIN_URL = "https://letterboxd.com/sign-in/"
-    DATA_URL = "https://letterboxd.com/settings/data/"
-
     # Load letterboxd credentials
-    conf = yaml.safe_load(open('login_details.yml'))
-    username = conf['letterboxd_app']['username']
-    password = conf['letterboxd_app']['password']
+    username = input('Enter your Letterboxd username: ')
+    password = getpass.getpass('Enter your Letterboxd password: ')
+
+    # Loading bar
+    def spinner():
+        while not stop_spinner:
+            for char in "|/-\\":
+                sys.stdout.write(f'\rLoading a random movie from your watchlist... {char}')
+                sys.stdout.flush()
+                time.sleep(0.2)
+
+    # Start progress bar in a separate thread
+    stop_spinner = False
+    spinner_thread = threading.Thread(target=spinner)
+    spinner_thread.start()
+
+    # Set config
+    driver = set_chrome_config()
 
     # Log in
-    login(LOGIN_URL, "field-username", username, "field-password", password, "button.standalone-flow-button.-inline.-action.-activity-indicator")
+    login(driver, 'https://letterboxd.com/sign-in/', "field-username", username, "field-password", password, "button.standalone-flow-button.-inline.-action.-activity-indicator")
 
     # Click on "do not consent" for cookies management
-    click_on(".fc-button.fc-cta-do-not-consent.fc-secondary-button")
+    click_on(driver, ".fc-button.fc-cta-do-not-consent.fc-secondary-button")
 
     # Hover over profile menu to reveal dropdown
     profile_menu = WebDriverWait(driver, 10).until(
@@ -80,16 +97,16 @@ def main():
     ActionChains(driver).move_to_element(profile_menu).perform()
 
     # Wait for dropdown to appear and click Settings
-    click_on("a[href='/settings/']")
+    click_on(driver, "a[href='/settings/']")
 
     # Click on "data"
-    click_on("a[data-id='data']")
+    click_on(driver, "a[data-id='data']")
 
     # Click on the "Export data" button
-    click_on("a[class='export-data-link cboxElement button'")
+    click_on(driver, "a[class='export-data-link cboxElement button'")
 
     # Click on "Export data" button in the pop-up window
-    click_on("a[class='button -action button-action export-data-button'")
+    click_on(driver, "a[class='button -action button-action export-data-button'")
     time.sleep(2)
 
     # Unzip downloaded file in the current directory
@@ -103,8 +120,12 @@ def main():
     watchlist = pd.read_csv('watchlist.csv')
 
     # Select and ouput random movie
-    random = random.randint(0, len(watchlist['Name']))
-    print(f"Selected movie: {watchlist['Name'][random]}")
+    random_index = random.randint(0, len(watchlist['Name']) - 1)
+    stop_spinner = True # Stop progress bar thread
+    spinner_thread.join()
+    sys.stdout.write("\r")  # Clear the spinner line
+    sys.stdout.flush()
+    print(f"\nSelected movie: {watchlist['Name'][random_index]}")
 
     # Clean 
     clean_files('comments.csv', 'diary.csv', 'profile.csv', 'ratings.csv', 'reviews.csv', 'watched.csv', 'watchlist.csv')
