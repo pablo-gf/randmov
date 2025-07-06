@@ -1,4 +1,6 @@
-chromedriver-autoinstaller==0.4.0
-selenium==4.11.2
-pandas==2.1.4
-stdiomask==1.0.6
+Flask==2.3.3
+selenium==4.15.2
+chromedriver-autoinstaller==0.6.2
+pandas==2.1.3
+Werkzeug==2.3.7
+stdiomask
