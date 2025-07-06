@@ -12,8 +12,8 @@ import zipfile
 import pandas as pd
 import random
 import shutil
-import getpass
 import threading
+import stdiomask
 
 def set_chrome_config():
 
@@ -64,21 +64,22 @@ def delete_zip():
 
 def main():
 
-    # Load letterboxd credentials
+    # Load Letterboxd credentials
     username = input('Enter your Letterboxd username: ')
-    password = getpass.getpass('Enter your Letterboxd password: ')
+    password = stdiomask.getpass('Enter your Letterboxd password: ', mask='*')  
 
     # Loading bar
-    def spinner():
+    def spinner(message):
         while not stop_spinner:
             for char in "|/-\\":
-                sys.stdout.write(f'\rLoading a random movie from your watchlist... {char}')
+                sys.stdout.write(f'\r{message} {char}')
                 sys.stdout.flush()
                 time.sleep(0.2)
 
     # Start progress bar in a separate thread
     stop_spinner = False
-    spinner_thread = threading.Thread(target=spinner)
+    print()
+    spinner_thread = threading.Thread(target=spinner, args=("Validating your Letterboxd credentials...",))
     spinner_thread.start()
 
     # Set config
@@ -89,6 +90,17 @@ def main():
 
     # Click on "do not consent" for cookies management
     click_on(driver, ".fc-button.fc-cta-do-not-consent.fc-secondary-button")
+    stop_spinner = True  # Stop credentials spinner
+    spinner_thread.join()
+    sys.stdout.write("\r")
+    sys.stdout.flush()
+    print("\n\nCredentials valid!")
+
+    # Start new spinner for the rest of the program
+    stop_spinner = False
+    print()
+    spinner_thread = threading.Thread(target=spinner, args=("Selecting a random movie from your watchlist...",))
+    spinner_thread.start()
 
     # Hover over profile menu to reveal dropdown
     profile_menu = WebDriverWait(driver, 10).until(
@@ -125,7 +137,7 @@ def main():
     spinner_thread.join()
     sys.stdout.write("\r")  # Clear the spinner line
     sys.stdout.flush()
-    print(f"\nSelected movie: {watchlist['Name'][random_index]}")
+    print(f"\n\nSelected movie: {watchlist['Name'][random_index]}")
 
     # Clean 
     clean_files('comments.csv', 'diary.csv', 'profile.csv', 'ratings.csv', 'reviews.csv', 'watched.csv', 'watchlist.csv')

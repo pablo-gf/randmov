@@ -1,4 +1,4 @@
-selenium==4.11.2
 chromedriver-autoinstaller==0.4.0
-pyyaml==6.0
+selenium==4.11.2
 pandas==2.1.4
+stdiomask==1.0.6

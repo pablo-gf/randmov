@@ -32,17 +32,6 @@ RandMov is a Python project that automates the process of logging into Letterbox
    pip install -r requirements.txt
    ```
 
-## Configuration
-
-1. Create a `login_details.yml` file in the project directory with the following structure:
-   ```yaml
-   letterboxd_app:
-     username: <your-letterboxd-username>
-     password: <your-letterboxd-password>
-   ```
-
-2. Ensure the `login_details.yml` file is correctly formatted and contains your Letterboxd credentials.
-
 ## Usage
 
 Run the script:
@@ -51,11 +40,12 @@ python randmov.py
 ```
 
 The script will:
-1. Log into Letterboxd.
-2. Export your watchlist data.
-3. Extract the ZIP file containing the watchlist.
-4. Load the watchlist CSV file.
-5. Select and display a random movie from the watchlist.
+1. Prompt for your username and password
+3. Log into Letterboxd.
+4. Export your watchlist data.
+5. Extract the ZIP file containing the watchlist.
+6. Load the watchlist CSV file.
+7. Select and display a random movie from the watchlist.
 
 ## Troubleshooting
 
