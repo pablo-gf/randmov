@@ -40,7 +40,7 @@ HTML_FORM = '''
       <form method="post">
         <div class="mb-3">
           <label for="username" class="form-label">Letterboxd Username</label>
-          <input type="text" class="form-control" id="username" name="username" placeholder="e.g. confuoco" required value="{{ request.form.username or '' }}">
+          <input type="text" class="form-control" id="username" name="username" placeholder="e.g. your_username" required value="{{ request.form.username or '' }}">
         </div>
         <button type="submit" class="btn btn-primary w-100">Get Random Movie</button>
       </form>
@@ -55,7 +55,6 @@ HTML_FORM = '''
           <a href="{{ random_movie.url }}" target="_blank" class="btn btn-outline-success mt-3 mb-2">
             View Poster & Details on Letterboxd
           </a>
-          <iframe src="{{ random_movie.url }}" class="movie-iframe"></iframe>
           <div class="mt-2">Randomly selected from your <b>{{ movies|length }}</b> movies.</div>
         </div>
         <div class="mt-4">
