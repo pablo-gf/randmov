@@ -27,6 +27,7 @@ HTML_FORM = '''
     .watchlist-toggle { color: #00e054; cursor: pointer; }
     .watchlist-list { max-height: 300px; overflow-y: auto; }
     .footer { margin-top: 3rem; color: #aaa; font-size: 0.95rem; text-align: center; }
+    .movie-iframe { width: 100%; max-width: 400px; height: 600px; border: 0; margin: 1rem auto 0 auto; display: block; }
   </style>
 </head>
 <body>
@@ -52,9 +53,10 @@ HTML_FORM = '''
           <div class="movie-title">
             <a href="{{ random_movie.url }}" class="movie-link" target="_blank">{{ random_movie.name }}</a>
           </div>
-          {% if random_movie.poster %}
-            <img src="{{ random_movie.poster }}" alt="Poster" class="img-fluid rounded mt-3 mb-2" style="max-height: 320px;">
-          {% endif %}
+          <a href="{{ random_movie.url }}" target="_blank" class="btn btn-outline-success mt-3 mb-2">
+            View Poster & Details on Letterboxd
+          </a>
+          <iframe src="{{ random_movie.url }}" class="movie-iframe"></iframe>
           <div class="mt-2">Randomly selected from your <b>{{ movies|length }}</b> movies.</div>
         </div>
         <div class="mt-4">

@@ -62,8 +62,8 @@ python app.py
 ```
 ├── randmov_local_chrome_parser.py  # Local Chrome driver webscraper
 ├── randmov_html_parser.py          # HTML parser logic
-├── app.py                         # Flask web application
-├── requirements_web.txt           # Python dependencies for the website version
-├── requirements_local.txt           # Python dependencies for the local version
-└── README.md                      # This file
+├── app.py                          # Flask web application
+├── requirements_web.txt            # Python dependencies for the website version
+├── requirements_local.txt          # Python dependencies for the local version
+└── README.md                       # This file
 ```
