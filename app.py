@@ -33,7 +33,6 @@ HTML_FORM = '''
 <body>
   <div class="container">
     <div class="text-center mb-4">
-      <img src="https://a.ltrbxd.com/logos/letterboxd-decal-dots-pos.svg" alt="Letterboxd" width="120" class="mb-2">
       <h1 class="fw-bold">RandMov</h1>
       <p class="lead">Get a random movie from your Letterboxd watchlist</p>
     </div>
