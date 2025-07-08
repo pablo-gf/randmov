@@ -20,9 +20,9 @@ A tool to get random movies from your Letterboxd watchlist. Available in two mod
 - All dependencies in `requirements.txt`
 
 #### Installation
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 #### Usage
 ```bash
@@ -43,12 +43,12 @@ python randmov_local_chrome_parser.py
 - All dependencies in `requirements.txt`
 
 #### Installation
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
 #### Local Usage
-```bash
+   ```bash
 python app.py
 ```
 - Open your browser and go to `http://localhost:5000`
