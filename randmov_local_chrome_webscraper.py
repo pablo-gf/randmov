@@ -14,6 +14,7 @@ import random
 import shutil
 import threading
 import stdiomask
+from spinner import spinner
 
 def set_chrome_config():
 
@@ -68,14 +69,6 @@ def main():
     username = input('Enter your Letterboxd username: ')
     password = stdiomask.getpass('Enter your Letterboxd password: ', mask='*')  
 
-    # Loading bar
-    def spinner(message):
-        while not stop_spinner:
-            for char in "|/-\\":
-                sys.stdout.write(f'\r{message} {char}')
-                sys.stdout.flush()
-                time.sleep(0.2)
-
     # Start progress bar in a separate thread
     stop_spinner = False
     print()
@@ -97,9 +90,9 @@ def main():
     print("\n\nCredentials valid!")
 
     # Start new spinner for the rest of the program
-    stop_spinner = False
     print()
-    spinner_thread = threading.Thread(target=spinner, args=("Selecting a random movie from your watchlist...",))
+    stop_spinner = threading.Event()
+    spinner_thread = threading.Thread(target=spinner, args=("Selecting a random movie from your watchlist...",stop_spinner))
     spinner_thread.start()
 
     # Hover over profile menu to reveal dropdown
