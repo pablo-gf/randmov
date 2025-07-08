@@ -1,6 +1,6 @@
 # RandMov
 
-A tool to get random movies from your Letterboxd watchlist. Available in two modes:
+A tool to get random movies from your Letterboxd watchlist. Web app available through Render here: [https://randmov.onrender.com/](https://randmov.onrender.com/). This app is available in two modes:
 
 - **Local Chrome Driver Webscraper** (uses Selenium and Chrome, for local use only)
 - **HTML Parser Web App** (uses requests/BeautifulSoup, for web deployment or local Flask)
@@ -40,11 +40,11 @@ python randmov_local_chrome_parser.py
 
 #### Prerequisites
 - Python 3.7+
-- All dependencies in `requirements.txt`
+- All dependencies in `requirements_web.txt`
 
 #### Installation
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements_web.txt
    ```
 
 #### Local Usage
@@ -55,26 +55,15 @@ python app.py
 - Enter your Letterboxd username (no password required)
 - The app will fetch your public watchlist and display a random movie
 
-#### Web Deployment
-- Deploy `app.py` and `randmov_html_parser.py` to a web host that allows outbound HTTP requests (e.g., Render, Fly.io, Railway, or PythonAnywhere **paid** account)
-- See deployment instructions in this README for details
-
----
+--
 
 ## File Structure
 
 ```
-├── randmov_local_chrome_parser.py  # Local Chrome driver webscraper (Selenium)
-├── randmov_html_parser.py          # HTML parser logic (requests/BeautifulSoup)
+├── randmov_local_chrome_parser.py  # Local Chrome driver webscraper
+├── randmov_html_parser.py          # HTML parser logic
 ├── app.py                         # Flask web application
-├── requirements.txt               # Python dependencies
+├── requirements_web.txt           # Python dependencies for the website version
+├── requirements_local.txt           # Python dependencies for the local version
 └── README.md                      # This file
 ```
-
----
-
-## Deployment Notes
-- **Local Chrome Driver Webscraper**: For local use only. Not suitable for most web hosts.
-- **HTML Parser Web App**: Can be deployed to any host that allows outbound HTTP requests (not PythonAnywhere free tier).
-
-For more details, see the full instructions below for each mode.
