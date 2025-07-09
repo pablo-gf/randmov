@@ -19,7 +19,7 @@ HTML_FORM = '''
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RandMov – Random Letterboxd Movie</title>
+  <title>RandMov</title>
   <link rel="icon" href="https://letterboxd.com/favicon.ico">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
@@ -50,7 +50,7 @@ HTML_FORM = '''
   <div class="container">
     <div class="text-center mb-4">
       <h1 class="fw-bold">RandMov</h1>
-      <p class="lead">Get a random movie from your Letterboxd watchlist using quantum randomness simulation</p>
+      <p class="lead">Get a random movie from your Letterboxd watchlist using a simulated quantum random number generator</p>
     </div>
     <div class="card p-4">
       <form method="post">
@@ -75,7 +75,7 @@ HTML_FORM = '''
           <a href="{{ random_movie.url }}" target="_blank" class="btn btn-outline-success mt-3 mb-2">
             View Poster & Details on Letterboxd
           </a>
-          <div class="mt-2 text-white">Randomly selected from your <b>{{ movies|length }}</b> movies.</div>
+          <div class="mt-2 text-white">Randomly selected from the <b>{{ movies|length }} in the watchlist</b> movies.</div>
         </div>
         {% if quantum_info %}
         <div class="quantum-info text-center">
