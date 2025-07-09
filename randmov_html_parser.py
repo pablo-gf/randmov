@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
-import random
 from spinner import spinner
 import threading
+from qrng import qrng
 
 class Movie:
     def __init__(self, name, poster, url, json):
@@ -73,10 +73,10 @@ def fetch_watchlist(username):
     return movies
 
 def get_random_movie(movies):
-    random_index = random.randint(0, len(movies) - 1)
-    random_movie = movies[random_index]
+    random_index_instance = qrng(len(movies) - 1)
+    random_movie = movies[random_index_instance.random_number]
     
-    return print(f'\nYour random movie is: {random_movie.name} ({random_movie.url})')
+    return print(f'\n\nYour random movie is: {random_movie.name} ({random_movie.url}). \n\nIt was chosen using this quantum circuit:\n{random_index_instance.qc.draw('text')}')
 
 def main():
     # Ask user for username
@@ -85,14 +85,16 @@ def main():
     # Start spinner
     stop_spinner = threading.Event()
     print()
-    spinner_thread = threading.Thread(target=spinner, args=("Retrieving your watchlist...", stop_spinner))
+    spinner_thread = threading.Thread(target=spinner, args=("Working on your watchlist...", stop_spinner))
     spinner_thread.start()
 
     # Show all movies in the watchlist for the given username
     movies = fetch_watchlist(username)
-    print(f'\n\nThis is your watchlist ({len(movies)} movies in total):')
-    for movie in movies:
-        print(f"- {movie.name} ({movie.url})")
+
+    # Uncomment this section if want to see the user's entire watchlist
+    #print(f'\n\nThis is your watchlist ({len(movies)} movies in total):')
+    #for movie in movies:
+    #   print(f"- {movie.name} ({movie.url})")
 
     # Output a random movie
     get_random_movie(movies)
