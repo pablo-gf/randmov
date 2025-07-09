@@ -19,8 +19,8 @@ HTML_FORM = '''
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RandMov</title>
-  <link rel="icon" href="https://letterboxd.com/favicon.ico">
+  <title> RandMov </title>
+  <link rel="icon" type="image/jpeg" href="/static/logo_small.jpg">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body { background: linear-gradient(135deg, #232526 0%, #414345 100%); min-height: 100vh; color: #fff; }
@@ -49,7 +49,7 @@ HTML_FORM = '''
 <body>
   <div class="container">
     <div class="text-center mb-4">
-      <h1 class="fw-bold">RandMov</h1>
+      <img src="/static/logo.jpg" alt="RandMov Logo" style="height:200px; border-radius:12px; box-shadow:0 2px 8px #0006; margin-bottom:10px;">
       <p class="lead">Get a random movie from your Letterboxd watchlist using a simulated quantum random number generator</p>
     </div>
     <div class="card p-4">
@@ -104,13 +104,13 @@ HTML_FORM = '''
       {% endif %}
     </div>
     <div class="footer">
-      <span>Made with <span style="color:#00e054;">&#9733;</span> using Flask, Letterboxd & Qiskit. Developed by Pablo Gutiérrez Félix</span>
+      <span>Made with <span style="color:#00e054;">&#9733;</span> using Flask, Letterboxd & Qiskit. Developed by <a href="https://github.com/pablo-gf" target="_blank" style="color:#00e054; text-decoration:underline;">Pablo Gutiérrez Félix</a></span>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     document.querySelector('form').addEventListener('submit', function() {
-      document.getElementById('submitBtn').disabled = true;
+      document.getElementById('submitBtn').disabled = true; 
       document.getElementById('submitBtn').textContent = 'Processing...';
       document.getElementById('loading').style.display = 'block';
     });

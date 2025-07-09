@@ -5,3 +5,4 @@ gunicorn
 qiskit
 qiskit-aer
 matplotlib
+pylatexenc
