@@ -49,7 +49,7 @@ HTML_FORM = '''
 <body>
   <div class="container">
     <div class="text-center mb-4">
-      <img src="/static/logo.jpg" alt="RandMov Logo" style="height:200px; border-radius:12px; box-shadow:0 2px 8px #0006; margin-bottom:10px;">
+      <img src="/static/logo.jpg" alt="RandMov Logo" border-radius:12px; box-shadow:0 2px 8px #0006; margin-bottom:10px;">
       <p class="lead">Get a random movie from your Letterboxd watchlist using a simulated quantum random number generator</p>
     </div>
     <div class="card p-4">
