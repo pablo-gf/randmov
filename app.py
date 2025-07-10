@@ -75,7 +75,7 @@ HTML_FORM = '''
           <a href="{{ random_movie.url }}" target="_blank" class="btn btn-outline-success mt-3 mb-2">
             View Poster & Details on Letterboxd
           </a>
-          <div class="mt-2 text-white">Randomly selected from the <b>{{ movies|length }} in the watchlist</b> movies.</div>
+          <div class="mt-2 text-white">Randomly selected from the <b>{{ movies|length }} movies in the watchlist</b>.</div>
         </div>
         {% if quantum_info %}
         <div class="quantum-info text-center">
