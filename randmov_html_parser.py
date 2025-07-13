@@ -91,13 +91,16 @@ def main():
     # Show all movies in the watchlist for the given username
     movies = fetch_watchlist(username)
 
+    for movie in movies:
+        print(movie.json)
+
     # Uncomment this section if want to see the user's entire watchlist
     #print(f'\n\nThis is your watchlist ({len(movies)} movies in total):')
     #for movie in movies:
     #   print(f"- {movie.name} ({movie.url})")
 
     # Output a random movie
-    get_random_movie(movies)
+    random_mov = get_random_movie(movies)
 
     # Stop spinner
     stop_spinner.set()

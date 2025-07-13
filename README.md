@@ -1,6 +1,6 @@
 # RandMov
 
-A tool that outputs random movies from your Letterboxd watchlist. This program features two options: a local and a web version. The latter uses a simulated **Quantum Random Number Generator (QRNG)** to select the random movie. Web app available through Render here: [https://randmov.onrender.com/](https://randmov.onrender.com/).
+A tool that outputs random movies from your Letterboxd watchlist. This program features two options: a local and a web version. The latter uses a simulated **Quantum Random Number Generator (QRNG)** to select the random movie, and allows to select a random movie from a specified set of movies in the user's watchlist. Web app available through Render here: [https://randmov.onrender.com/](https://randmov.onrender.com/).
 
 ---
 
