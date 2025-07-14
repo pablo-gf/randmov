@@ -252,12 +252,7 @@ HTML_FORM = '''
       <div class="movie-card text-center">
         <h5 class="text-white">And the chosen movie is ...</h5
         <div class="movie-title">
-          <a href="{{ random_movie.url }}" class="movie-link" target="_blank">{{ random_movie.name }}</a>
-        </div>
-        <a href="{{ random_movie.url }}" target="_blank" class="btn btn-outline-success mt-3 mb-2">
-          View Poster & Details on Letterboxd
-        </a>
-      </div>
+          <a href="{{ random_movie.url }}" class="movie-title" target="_blank">{{ random_movie.name }}</a>
       {% if quantum_info %}
       <div class="quantum-info text-center">
         <h5 class="text-white">Quantum Circuit Used (<strong>{{ quantum_info.num_qubits }} qubits</strong>):</h5>
