@@ -1,5 +1,0 @@
-nohup: ignoring input
-  File "/home/pablo/randmov/app.py", line 656
-    } except Exception as e {
-    ^
-SyntaxError: unmatched '}'
