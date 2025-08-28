@@ -49,20 +49,40 @@ def fetch_watchlist(username):
 
         movies_found_this_page = 0
         
-        # Within the grid. each <li> is a movie, and the <div> tag contains the attributes we are interested in
+        # Within the grid, each <li> is a movie, and the <div> tag contains the attributes we are interested in
         for grid in grid_list:
             li_items = grid.find_all('li', class_='griditem')
             for li in li_items:
                 div = li.find('div', class_='react-component')
                 if div:
-                    name = div.get('data-item-name')
-                    poster = "https://letterboxd.com" + div.get('data-poster-url')
-                    url = "https://letterboxd.com" + div.get('data-target-link')
-                    json = "https://letterboxd.com" + div.get('data-details-endpoint')
-
-                    movie = Movie(name, poster, url, json)
-                    movies.append(movie)
-                    movies_found_this_page += 1
+                    # Extract movie data using the correct attribute names
+                    target_link = div.get('data-target-link')
+                    details_endpoint = div.get('data-details-endpoint')
+                    poster_url = div.get('data-poster-url')
+                    full_display_name = div.get('data-item-full-display-name')
+                    
+                    if target_link and details_endpoint:
+                        # Use full display name if available, otherwise extract from target_link
+                        if full_display_name:
+                            name = full_display_name
+                        else:
+                            # Extract name from target_link (e.g., "/film/babel-2006/" -> "babel-2006")
+                            name = target_link.strip('/').split('/')[-1].replace('-', ' ').title()
+                        
+                        # Build full URLs
+                        url = "https://letterboxd.com" + target_link
+                        json_endpoint = details_endpoint  # This already includes the path
+                        
+                        # Get poster URL
+                        if poster_url:
+                            poster = "https://letterboxd.com" + poster_url
+                        else:
+                            # Fallback poster
+                            poster = f"https://letterboxd.com{target_link}image-150/"
+                        
+                        movie = Movie(name, poster, url, json_endpoint)
+                        movies.append(movie)
+                        movies_found_this_page += 1
                 
         # Break if no movies were found on this page
         if movies_found_this_page == 0:
