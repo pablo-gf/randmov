@@ -10,6 +10,9 @@ A tool that outputs random movies from your Letterboxd watchlist. This program f
 
 **Scripts:** `randmov_html_parser.py` (logic) + `app.py` (Flask web app) + `qrng.py` (Quantum Random Number Generator simulator)
 
+#### Scraping Logic
+RandMov retrieves the raw HTML file from the user's public watchlist to retrieve the movies data and navigataes through the HTML tags to identify the movie details: *name*, *poster*, *url*, and *json data*. It first identifies a grid containing all the movies through the tag `<ul> class='grid'`). Inside this grid, each `<li> class_='griditem'` tag is a movie, and the sub tag `<div> class='react-component'` contains the movie details specified earlier.
+
 #### Quantum Random Number Generator (QRNG)
 
 RandMov uses a simulated quantum random number generator, powered by [Qiskit](https://qiskit.org/) and the [AerSimulator](https://github.com/Qiskit/qiskit-aer) backend, to select a random movie from your watchlist.
