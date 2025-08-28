@@ -13,10 +13,6 @@ class Movie:
     
     def __str__(self):
         return f'{self.name} ({self.url}) \n {self.json}'
-    
-# Makes the title look nicer
-def pretty_name(name):
-    return name.replace('-', ' ').title()
 
 # Retrieves the username's watchlist
 def fetch_watchlist(username):
@@ -44,29 +40,33 @@ def fetch_watchlist(username):
         # Load the html file
         soup = BeautifulSoup(response.text, 'html.parser')
             
-        # Get the <li> tag for each movie
-        movies_raw_html_list = soup.find_all('li', class_='poster-container')
+        # Get the grid containing all the movies in the page
+        grid_list = soup.find_all('ul', class_='grid')
 
         # Break when no movies are found on the page
-        if not movies_raw_html_list:
+        if not grid_list:
             break 
 
-        # Inside each <li>, <div> tag is the one with the attributes we are interested in
-        for li in movies_raw_html_list:
-            div = li.find('div', class_='really-lazy-load poster film-poster linked-film-poster')
-            if div:
-                name = div.get('data-film-slug')
-                poster = "https://letterboxd.com" + div.get('data-poster-url')
-                url = "https://letterboxd.com" + div.get('data-target-link')
-                json = div.get('data-details-endpoint')
+        movies_found_this_page = 0
+        
+        # Within the grid. each <li> is a movie, and the <div> tag contains the attributes we are interested in
+        for grid in grid_list:
+            li_items = grid.find_all('li', class_='griditem')
+            for li in li_items:
+                div = li.find('div', class_='react-component')
+                if div:
+                    name = div.get('data-item-name')
+                    poster = "https://letterboxd.com" + div.get('data-poster-url')
+                    url = "https://letterboxd.com" + div.get('data-target-link')
+                    json = "https://letterboxd.com" + div.get('data-details-endpoint')
 
-                movie = Movie(
-                    pretty_name(name),
-                    poster,
-                    url,
-                    json
-                )
-                movies.append(movie)
+                    movie = Movie(name, poster, url, json)
+                    movies.append(movie)
+                    movies_found_this_page += 1
+                
+        # Break if no movies were found on this page
+        if movies_found_this_page == 0:
+            break
 
         # Check if there are more pages in the watchlist
         watchlist_page += 1
